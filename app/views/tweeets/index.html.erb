@@ -1,0 +1,16 @@
+<h1>fashion_site</h1>
+<h3>一覧ページ</h3>
+<%= link_to "新規投稿へ",new_tweeet_path %>
+<div class="tweets-container">
+<% if user_signed_in? %>
+  <%= link_to "マイページへ", user_path(current_user.id) %>
+<% end %>
+  <% @tweeets.each do |t| %>
+    <div class="tweet">
+      <%= link_to t.user.name, user_path(t.user.id) %> 
+      <%= t.user.email %> 
+      <%= t.title %>
+      <%= t.about %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,12 @@
+<h1>fashion_site</h1>
+<h3>一覧ページ</h3>
+<%= link_to "新規投稿へ",new_tweet_path %>
+<div class="tweets-container">
+  <% @tweets.each do |t| %>
+    <div class="tweet">
+      <%= t.user.email %> 
+      <%= t.title %>
+      <%= t.about %>
+    </div>
+  <% end %>
+</div>
