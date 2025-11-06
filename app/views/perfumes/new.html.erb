@@ -1,44 +1,89 @@
+<% if @perfume.errors.any? %>
+  <div class="alert alert-danger">
+    <p><strong>入力にエラーがあります。</strong></p>
+    <ul>
+      <% @perfume.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <%= form_for(@perfume, class: 'form-horizontal', role: 'form') do |f| %>
-    <div class="perfume-container">
-        <div class="col-12">
-            <p>Q1. どちらかと言うと…</p>
-        </div>
-        <div class="col-6">
-            <%= f.radio_button :question1, "1", id: "custom_id1" %>
-            <label for="custom_id1">じっくり考える方だ</label>
-            <%= f.radio_button :question1, "2", id: "custom_id2" %>
-            <label for="custom_id2">考えるより行動する方だ</label>
-        </div>
-        <div class="col-12">
-            <p>Q2. 自分の価値観として近い方は…</p>
-        </div> 
-        <div class="col-6">
-            <%= f.radio_button :question2, "1", id: "custom_id3" %>
-            <label for="custom_id3">周りの人と違う存在でありたい</label>
-            <%= f.radio_button :question2, "2", id: "custom_id4" %>
-            <label for="custom_id4">周りと同じでいたい</label>
-        </div>   
-        <div class="col-12">
-            <p>Q3. 人と接するときは…</p>
-        </div>
-        <div class="col-6">
-            <%= f.radio_button :question3, "1", id: "custom_id5" %>
-            <label for="custom_id5">相手の話をよく聞く方だ</label>
-            <%= f.radio_button :question3, "2", id: "custom_id6" %>
-            <label for="custom_id6">自分の話をよくする方だ</label>
-        </div>
-    
-        <div class="col-12">
-            <p>Q4. 大切にしたいのは…</p>
-        </div>
-        <div class="col-6">
-            <%= f.radio_button :question4, "1", id: "custom_id7" %>
-            <label for="custom_id7">論理性だ</label>
-            <%= f.radio_button :question4, "2", id: "custom_id8" %>
-            <label for="custom_id8">情緒だ</label>
-        </div>
+  <div class="perfume-container">
+
+    <!-- Q1 -->
+    <div class="col-12"><p>Q1. トレンドアイテムは？</p></div>
+    <div class="col-6">
+      <%= f.radio_button :question1, "A", id: "q1a", required: true %><label for="q1a">取り入れたい</label>
+      <%= f.radio_button :question1, "B", id: "q1b" %><label for="q1b">気にしない</label>
     </div>
-    <div class="sindanbotan">
-        <%= f.submit " 結果 " %>
+
+    <!-- Q2 -->
+    <div class="col-12"><p>Q2. どっち派？</p></div>
+    <div class="col-6">
+      <%= f.radio_button :question2, "A", id: "q2a", required: true %><label for="q2a">アウトドア</label>
+      <%= f.radio_button :question2, "B", id: "q2b" %><label for="q2b">インドア</label>
     </div>
+
+    <!-- Q3 -->
+    <div class="col-12"><p>Q3. 靴はどっちをはくことが多い？</p></div>
+    <div class="col-6">
+      <%= f.radio_button :question3, "A", id: "q3a", required: true %><label for="q3a">スニーカー（派手め）、サンダル系</label>
+      <%= f.radio_button :question3, "B", id: "q3b" %><label for="q3b">スニーカー（シンプル）、革靴系</label>
+    </div>
+
+    <!-- Q4 -->
+    <div class="col-12"><p>Q4. ショッピングで最も重視するポイントは？</p></div>
+    <div class="col-6">
+      <%= f.radio_button :question4, "A", id: "q4a", required: true %><label for="q4a">デザイン</label>
+      <%= f.radio_button :question4, "B", id: "q4b" %><label for="q4b">着心地</label>
+      <%= f.radio_button :question4, "C", id: "q4c" %><label for="q4c">価格</label>
+      <%= f.radio_button :question4, "D", id: "q4d" %><label for="q4d">流行</label>
+    </div>
+
+    <!-- Q5 -->
+    <div class="col-12"><p>Q5. 憧れるのはどっちのスタイル？</p></div>
+    <div class="col-6">
+      <%= f.radio_button :question5, "A", id: "q5a", required: true %><label for="q5a">町で浮かない落ち着いた雰囲気</label>
+      <%= f.radio_button :question5, "B", id: "q5b" %><label for="q5b">個性が出るファッション</label>
+    </div>
+
+    <!-- Q6 -->
+    <div class="col-12"><p>Q6. 色遣いはどっち派？</p></div>
+    <div class="col-6">
+      <%= f.radio_button :question6, "A", id: "q6a", required: true %><label for="q6a">モノトーンやアースカラー中心</label>
+      <%= f.radio_button :question6, "B", id: "q6b" %><label for="q6b">指し色や派手目なカラーが好き</label>
+    </div>
+
+    <!-- Q7 -->
+    <div class="col-12"><p>Q7. 素材を選ぶなら？</p></div>
+    <div class="col-6">
+      <%= f.radio_button :question7, "A", id: "q7a", required: true %><label for="q7a">ナイロン・機能素材系</label>
+      <%= f.radio_button :question7, "B", id: "q7b" %><label for="q7b">コットン・デニム・レザーなど</label>
+    </div>
+
+    <!-- Q8 -->
+    <div class="col-12"><p>Q8. 服を選ぶモチベーションは？</p></div>
+    <div class="col-6">
+      <%= f.radio_button :question8, "A", id: "q8a", required: true %><label for="q8a">実用性</label>
+      <%= f.radio_button :question8, "B", id: "q8b" %><label for="q8b">おしゃれ</label>
+      <%= f.radio_button :question8, "C", id: "q8c" %><label for="q8c">クラシック</label>
+      <%= f.radio_button :question8, "D", id: "q8d" %><label for="q8d">スポーティ</label>
+    </div>
+
+    <!-- Q9 -->
+    <div class="col-12"><p>Q9. よく言われる印象は？</p></div>
+    <div class="col-6">
+      <%= f.radio_button :question9, "A", id: "q9a", required: true %><label for="q9a">元気</label>
+      <%= f.radio_button :question9, "B", id: "q9b" %><label for="q9b">落ち着いている</label>
+      <%= f.radio_button :question9, "C", id: "q9c" %><label for="q9c">面白い</label>
+      <%= f.radio_button :question9, "D", id: "q9d" %><label for="q9d">優しい</label>
+    </div>
+
+  </div>
+
+  <div class="sindanbotan">
+    <%= f.submit " 診断する " %>
+  </div>
 <% end %>

@@ -3,14 +3,78 @@
 <p>メールアドレス : <%= @user.email %></p>
 <p>プロフィール : <%= @user.profile %></p>
 
-<% if current_user.id == @user.id %>
+<% if current_user&.id == @user.id %>
   <%= link_to "編集する", edit_user_registration_path %>
 <% end %>
 
 <h2>ユーザーの投稿一覧</h2>
 <% @user.tweets.each do |t| %>
-  <%= t.user.name %>
-  <%= t.body %>
+  <div class="tweet">
+    <p><strong>投稿者:</strong> <%= t.user&.name || t.user&.email %></p>
+    <p><strong>タイトル:</strong> <%= t.title %></p>
+    <p><strong>本文:</strong> <%= t.about %></p>  <!-- ← body から about に修正 -->
+  </div>
 <% end %>
 
+<!-- 以下はいいね機能を実装している場合 -->
+<% if @user.respond_to?(:liked_tweets) %>
+  <h2>ユーザーがいいねした投稿一覧</h2>
+  <% @user.liked_tweets.each do |t| %>
+    <div class="tweet">
+      <p><strong>投稿者:</strong> <%= t.user&.name || t.user&.email %></p>
+      <p><strong>タイトル:</strong> <%= t.title %></p>
+      <p><strong>本文:</strong> <%= t.about %></p>
+    </div>
+  <% end %>
+<% end %>
+<!-- ここまで -->
+
 <%= link_to "Tweet一覧に戻る", tweets_path %>
+
+<h3>マイページ</h3>
+<p><%= current_user.email %> さんの診断履歴</p>
+
+<% if @perfumes.any? %>
+  <div class="history-grid">
+    <% @perfumes.each do |p| %>
+      <% top3 = p.top3_styles %>
+      <div class="history-card">
+        <div class="history-head">
+          <strong><%= l(p.created_at, format: :long) %></strong>
+          <span>（ID: <%= p.id %>）</span>
+        </div>
+        <ol class="top3">
+          <% top3.each do |s| %>
+            <li><%= s[:name] %>（<%= s[:count] %>）</li>
+          <% end %>
+        </ol>
+        <div class="actions">
+          <%= link_to "詳細を見る", perfume_path(p), class: "btn btn-sm btn-primary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>まだ診断履歴がありません。</p>
+  <%= link_to "診断をはじめる", new_perfume_path, class: "btn btn-primary" %>
+<% end %>
+
+<style>
+.history-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.history-card {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 12px;
+  background: #fff;
+}
+.history-head { display:flex; gap: 8px; align-items: baseline; margin-bottom: 8px; }
+.top3 { margin: 0 0 8px; padding-left: 18px; }
+.actions .btn { text-decoration: none; }
+</style>
+
+

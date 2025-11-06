@@ -1,12 +1,17 @@
-<h1>fashion_site</h1>
+<h1>GeekTwitter</h1>
+<h1>自分の題名</h1>
 <h3>一覧ページ</h3>
-<%= link_to "新規投稿へ",new_tweet_path %>
+<% if user_signed_in? %>
+  <%= link_to "マイページへ", user_path(current_user.id) %>
+<% end %>
+
+<%= link_to "新規投稿へ", new_tweet_path %>
 <div class="tweets-container">
   <% @tweets.each do |t| %>
     <div class="tweet">
-      <%= t.user.email %> 
       <%= t.title %>
       <%= t.about %>
+      <%= t.user.email %>
     </div>
   <% end %>
 </div>

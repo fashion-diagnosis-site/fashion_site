@@ -328,7 +328,7 @@ DEPENDENCIES
   dotenv-rails
   importmap-rails
   jbuilder
-  pg
+  pg (~> 1.5)
   puma (>= 5.0)
   rails (~> 7.2.2)
   rubocop-rails-omakase

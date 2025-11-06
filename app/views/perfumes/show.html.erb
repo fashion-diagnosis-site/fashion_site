@@ -1,72 +1,82 @@
 <div class="intoro">
   <h5>診断結果</h5>
-  <p>あなたにおすすめの香りは…</p>
+  <p>あなたに近いスタイル上位3つ</p>
 </div>
+
+<% top3 = @perfume.top3_styles %>
+
 <div class="perfume-container">
-  <% case [@perfume.question1, @perfume.question2, @perfume.question3, @perfume.question4] %>
-  <% when ["1", "1", "1", "1"] %>
-    <h6>レモン</h6>
-    <p>柑橘系の代表的な原料</p>
-    <p>清涼感があり、爽やかな印象</p>
-  <% when ["1", "1", "1", "2"] %>
-    <h6>シトラス</h6>
-    <p>オレンジに似た柑橘系の果物</p>
-    <p>リラックス効果がある</p>
-  <% when ["1", "1", "2", "1"] %>
-    <h6>ローズ</h6>
-    <p>華やかで上品な香り</p>
-    <p>ストレスを緩和してくれる効果がある</p>
-  <% when ["1", "1", "2", "2"] %>
-    <h6>ラベンダー</h6>
-    <p>優しく女性らしい香り</p>
-    <p>気持ちを落ち着かせてくれる</p>
-  <% when ["1", "2", "1", "1"] %>
-    <h6>ジャスミン</h6>
-    <p>爽やかなのに官能的な香り</p>
-    <p>幸福感を得やすい</p>
-  <% when ["1", "2", "1", "2"] %>
-    <h6>ピーチ</h6>
-    <p>フレッシュで優しい香り</p>
-    <p>アンチエイジングにも最適</p>
-  <% when ["1", "2", "2", "1"] %>
-    <h6>アップル</h6>
-    <p>特徴的で甘い香り</p>
-    <p>万人受けしやすい</p>
-  <% when ["1", "2", "2", "2"] %>
-    <h6>ユーカリ</h6>
-    <p>しっかりとした優しい香り</p>
-    <p>浄化作用があり。気持ちを落ち着かせてくれる</p>
-  <% when ["2", "1", "1", "1"] %>
-    <h6>ローズマリー</h6>
-    <p>きりりとした強めの香りが特徴的</p>
-    <p>美容効果が高い</p>
-  <% when ["2", "1", "1", "2"] %>
-    <h6>ベルガモット</h6>
-    <p>柑橘系の果実</p>
-    <p>甘くてフレッシュな、万能な香料</p>
-  <% when ["2", "1", "2", "1"] %>
-    <h6>ムスク</h6>
-    <p>雄のジャコウジカの腹部にある香嚢から抽出した香料</p>
-    <p>官能的で重い香り</p>
-  <% when ["2", "1", "2", "2"] %>
-    <h6>アンバー</h6>
-    <p>マッコウクジラの結石から抽出した香料</p>
-    <p>魅惑的で色気のある香り</p>
-  <% when ["2", "2", "1", "1"] %>
-    <h6>シナモン</h6>
-    <p>甘いスパイスの香り</p>
-    <p>香水のアクセントとしてよく使われる</p>
-  <% when ["2", "2", "1", "2"] %>
-    <h6>バニラ</h6>
-    <p>甘くて官能的な香り</p>
-    <p>上品で年齢を問わず人気が高い</p>
-  <% when ["2", "2", "2", "1"] %>
-    <h6>イランイラン</h6>
-    <p>色気のある濃厚で甘い香り</p>
-    <p>恋愛に効果があり</p>
-  <% when ["2", "2", "2", "2"] %>
-    <h6>サンダルウッド</h6>
-    <p>お香としてよく使われる白檀の香り</p>
-    <p>集中力を高める効果もあり</p>
+  <ol>
+    <% top3.each do |s| %>
+      <li>
+        <strong><%= s[:name] %></strong>
+        （スコア：<%= s[:count] %>）
+      </li>
+    <% end %>
+  </ol>
+
+  <hr>
+
+  <details>
+    <summary>スコア内訳（1〜8）を開く</summary>
+    <% counts = @perfume.style_counts %>
+    <ul>
+      <% counts.keys.sort.each do |sid| %>
+        <li><%= Perfume::STYLE_NAMES[sid] %>：<%= counts[sid] %></li>
+      <% end %>
+    </ul>
+  </details>
+
+  <hr>
+
+  <h6>参考コーデ</h6>
+
+  <% top3.each do |s| %>
+    <section class="style-section">
+      <h5 class="style-title">#<%= s[:id] %> <%= s[:name] %></h5>
+  
+      <% cards = style_cards(s[:id]) %>
+      <div class="style-grid">
+        <% if cards.any? %>
+          <% cards.each do |card| %>
+            <div class="style-card">
+              <% if card[:href].present? %>
+                <%= link_to card[:href], target: "_blank", rel: "noopener noreferrer" do %>
+                  <%= image_tag(card[:src], alt: "#{s[:name]} コーデ", loading: "lazy") %>
+                <% end %>
+              <% else %>
+                <%= image_tag(card[:src], alt: "#{s[:name]} コーデ", loading: "lazy") %>
+              <% end %>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="style-card">
+            <%= image_tag("placeholder.png", alt: "画像準備中", loading: "lazy") %>
+          </div>
+        <% end %>
+      </div>
+    </section>
   <% end %>
+  
 </div>
+
+<style>
+  .style-section { margin-bottom: 24px; }
+  .style-title { margin: 8px 0 12px; font-weight: 700; }
+  .style-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .style-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #eee;
+    background: #fff;
+  }
+  .style-card img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

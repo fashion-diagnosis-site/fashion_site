@@ -13,8 +13,10 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-
-resources :tweets
+  resources :tweets
+  resources :users, only: [:show] # ユーザーマイページへのルーティング
+  resources :perfumes, only: [:new, :create, :show, :index]
   root 'tweets#index'
-resources :perfumes
+  resources :perfumes
+  get 'hello/index' => 'hello#index'
 end
