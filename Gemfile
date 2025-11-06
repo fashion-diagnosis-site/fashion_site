@@ -35,15 +35,11 @@ gem "bootsnap", require: false
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
-  gem 'sqlite3' # 追加
-  gem 'dotenv-rails' # 追加
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-
-  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
+  # 開発/テストは SQLite
+  gem "sqlite3", "~> 1.4"
+  gem "dotenv-rails"
+  gem "debug", platforms: %i[mri windows], require: "debug/prelude"
   gem "brakeman", require: false
-
-  # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 end
 
@@ -60,6 +56,7 @@ group :test do
 end
 gem 'devise'
 
-group :production do
-  gem 'pg'
-end
+#group :production do
+#  gem 'pg'
+#end
+gem "pg", "~> 1.5"
