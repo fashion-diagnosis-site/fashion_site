@@ -1,82 +1,103 @@
-<div class="intoro">
-  <h5>診断結果</h5>
-  <p>あなたに近いスタイル上位3つ</p>
-</div>
+<div class="fx-result-canvas">
+  <!-- HERO -->
+  <header class="fx-result-hero">
+    <div class="fx-result-hero-main">
+      <div class="fx-result-hero-badge">YOUR STYLE RESULT</div>
+      <h1 class="fx-result-title">診断結果</h1>
+      <p class="fx-result-sub">あなたに近いスタイル 上位3つ</p>
+    </div>
 
-<% top3 = @perfume.top3_styles %>
+    <div class="fx-result-cta">
+      <%= link_to "アイテム一覧を見る", aitemu_tweets_path, class: "fx-result-btn fx-result-btn-primary" %>
+      <%= link_to "もう一度診断する", new_perfume_path, class: "fx-result-btn fx-result-btn-ghost" %>
+    </div>
 
-<div class="perfume-container">
-  <ol>
-    <% top3.each do |s| %>
-      <li>
-        <strong><%= s[:name] %></strong>
-        （スコア：<%= s[:count] %>）
-      </li>
-    <% end %>
-  </ol>
+    <div class="fx-result-hero-glow"></div>
+  </header>
 
-  <hr>
+  <% top3 = @perfume.top3_styles %>
 
-  <details>
-    <summary>スコア内訳（1〜8）を開く</summary>
-    <% counts = @perfume.style_counts %>
-    <ul>
-      <% counts.keys.sort.each do |sid| %>
-        <li><%= Perfume::STYLE_NAMES[sid] %>：<%= counts[sid] %></li>
+  <!-- TOP3: ランキングカード -->
+  <section class="fx-result-section">
+    <h2 class="fx-result-h2">あなたと相性の良いスタイル TOP3</h2>
+    <ol class="fx-result-top3">
+      <% top3.each_with_index do |s, i| %>
+        <li class="fx-result-top3-item fx-result-fadein" style="--fxr-delay:<%= i * 80 %>ms">
+          <div class="fx-result-rank fx-result-rank-<%= i+1 %>"><%= i+1 %></div>
+          <div class="fx-result-top3-body">
+            <div class="fx-result-top3-name"><%= s[:name] %></div>
+            <div class="fx-result-chip">スコア <%= s[:count] %></div>
+          </div>
+        </li>
       <% end %>
-    </ul>
-  </details>
+    </ol>
+  </section>
 
-  <hr>
+  <!-- スコア内訳（1〜8） -->
+  <section class="fx-result-section">
+    <details class="fx-result-details">
+      <summary>スコア内訳（1〜8）を開く</summary>
+      <% counts = @perfume.style_counts %>
+      <% maxv = counts.values.max.to_f.nonzero? || 1.0 %>
+      <ul class="fx-result-bars">
+        <% counts.keys.sort.each do |sid| %>
+          <% v = counts[sid].to_i %>
+          <% pct = ((v / maxv) * 100).round %>
+          <li class="fx-result-barrow" style="--w:<%= pct %>%">
+            <span class="fx-result-barlabel">#<%= sid %> <%= Perfume::STYLE_NAMES[sid] %></span>
+            <span class="fx-result-bar">
+              <span class="fx-result-barfill"></span>
+            </span>
+            <span class="fx-result-barvalue"><%= v %></span>
+          </li>
+        <% end %>
+      </ul>
+    </details>
+  </section>
 
-  <h6>参考コーデ</h6>
+  <!-- 参考コーデ -->
+  <section class="fx-result-section">
+    <h2 class="fx-result-h2">あなたにおすすめの参考コーデ</h2>
 
-  <% top3.each do |s| %>
-    <section class="style-section">
-      <h5 class="style-title">#<%= s[:id] %> <%= s[:name] %></h5>
-  
-      <% cards = style_cards(s[:id]) %>
-      <div class="style-grid">
-        <% if cards.any? %>
-          <% cards.each do |card| %>
-            <div class="style-card">
-              <% if card[:href].present? %>
-                <%= link_to card[:href], target: "_blank", rel: "noopener noreferrer" do %>
+    <% top3.each_with_index do |s, idx| %>
+      <article class="fx-result-stylebox fx-result-fadein" style="--fxr-delay:<%= 200 + idx * 120 %>ms">
+        <header class="fx-result-stylehead">
+          <span class="fx-result-style-tag">STYLE #<%= s[:id] %></span>
+          <h3 class="fx-result-styletitle"><%= s[:name] %></h3>
+        </header>
+
+        <% cards = style_cards(s[:id]) %>
+        <div class="fx-result-stylegrid">
+          <% if cards.any? %>
+            <% cards.each_with_index do |card, cidx| %>
+              <div class="fx-result-card" style="--fxr-card-delay:<%= cidx * 40 %>ms">
+                <% if card[:href].present? %>
+                  <%= link_to card[:href], target: "_blank", rel: "noopener" do %>
+                    <%= image_tag(card[:src], alt: "#{s[:name]} コーデ", loading: "lazy") %>
+                  <% end %>
+                <% else %>
                   <%= image_tag(card[:src], alt: "#{s[:name]} コーデ", loading: "lazy") %>
                 <% end %>
-              <% else %>
-                <%= image_tag(card[:src], alt: "#{s[:name]} コーデ", loading: "lazy") %>
-              <% end %>
+              </div>
+            <% end %>
+          <% else %>
+            <div class="fx-result-card">
+              <%= image_tag("placeholder.png", alt: "画像準備中", loading: "lazy") %>
             </div>
           <% end %>
-        <% else %>
-          <div class="style-card">
-            <%= image_tag("placeholder.png", alt: "画像準備中", loading: "lazy") %>
-          </div>
-        <% end %>
-      </div>
-    </section>
-  <% end %>
-  
-</div>
+        </div>
+      </article>
+    <% end %>
+  </section>
 
-<style>
-  .style-section { margin-bottom: 24px; }
-  .style-title { margin: 8px 0 12px; font-weight: 700; }
-  .style-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-  }
-  .style-card {
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid #eee;
-    background: #fff;
-  }
-  .style-card img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-</style>
+  <!-- ボトムCTA -->
+  <section class="fx-result-section fx-result-bottom">
+    <p class="fx-result-bottom-text">
+      気になったスタイルのアイテムを、実際のショップでチェックしてみましょう。
+    </p>
+    <div class="fx-result-bottom-actions">
+      <%= link_to "アイテム一覧を見る", aitemu_tweets_path, class: "fx-result-btn fx-result-btn-primary" %>
+      <%= link_to "もう一度診断する", new_perfume_path, class: "fx-result-btn fx-result-btn-ghost" %>
+    </div>
+  </section>
+</div>

@@ -17,6 +17,10 @@ class TweetsController < ApplicationController
         end
     end
 
+    def aitemu
+    end
+    def koode
+    end
   private
   def tweet_params
     params.require(:tweet).permit(:title, :about)

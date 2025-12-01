@@ -1,37 +1,69 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Fashion Site" %></title>
+    <title>Yuta</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= yield :head %>
+    <!-- ★ Bootstrap 5 CSS（CDN）-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    >
 
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-<body>
- <header>
-  <div class="header-list">
-   <ul>
-    <% if user_signed_in? %>
-     <li><%= button_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
-    <% else %>
-     <li><%= link_to "新規登録", new_user_registration_path %></li>
-     <li><%= link_to "ログイン", new_user_session_path %></li>
-     <li><%= link_to "ホーム", tweets_path %></li>
-    <% end %>
-   </ul>
-  </div>
- </header>
- <main>
-  <%= yield %>
- </main>
-</body>
+  <body>
+    <header class="sticky-top">
+      <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+          <%= link_to 'Top', root_path, class: "navbar-brand" %>
+
+          <!-- ★ 右上ハンバーガー -->
+          <button class="navbar-toggler" type="button"
+                  data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                  aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- 折り畳みメニュー -->
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+              <% if user_signed_in? %>
+                <li class="nav-item"><%= link_to "診断開始", new_perfume_path, class: "nav-link" %></li>
+                <li class="nav-item"><%= link_to "マイページへ", user_path(current_user.id), class: "nav-link" %></li>
+                <li class="nav-item"><%= link_to "アイテム一覧", aitemu_tweets_path, class: "nav-link" %></li>
+                <li class="nav-item">
+                  <%= link_to "用語サイト", "https://www.fashion-press.net/words/",
+                                class: "nav-link", target: "_blank", rel: "noopener" %>
+                </li>
+                <li class="nav-item">
+                  <%= button_to "ログアウト", destroy_user_session_path,
+                      method: :delete, class: "nav-link btn btn-link p-0" %>
+                </li>               
+              <% else %>
+                <li class="nav-item"><%= link_to "新規登録", new_user_registration_path, class: "nav-link" %></li>
+                <li class="nav-item"><%= link_to "ログイン", new_user_session_path, class: "nav-link" %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container py-3">
+      <%= yield %>
+    </main>
+
+    <!-- ★ Bootstrap 5 JS（CDN・Popper同梱）-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous">
+    </script>
+  </body>
 </html>

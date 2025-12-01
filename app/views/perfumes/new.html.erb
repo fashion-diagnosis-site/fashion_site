@@ -1,6 +1,7 @@
+<%# ---------- エラーメッセージ ---------- %>
 <% if @perfume.errors.any? %>
-  <div class="alert alert-danger">
-    <p><strong>入力にエラーがあります。</strong></p>
+  <div class="fx-quiz-alert">
+    <strong>入力にエラーがあります。</strong>
     <ul>
       <% @perfume.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -9,81 +10,239 @@
   </div>
 <% end %>
 
-<%= form_for(@perfume, class: 'form-horizontal', role: 'form') do |f| %>
-  <div class="perfume-container">
-
-    <!-- Q1 -->
-    <div class="col-12"><p>Q1. トレンドアイテムは？</p></div>
-    <div class="col-6">
-      <%= f.radio_button :question1, "A", id: "q1a", required: true %><label for="q1a">取り入れたい</label>
-      <%= f.radio_button :question1, "B", id: "q1b" %><label for="q1b">気にしない</label>
+<div class="fx-quiz-canvas">
+  <header class="fx-quiz-hero">
+    <div class="fx-quiz-hero-inner">
+      <div>
+        <h1 class="fx-quiz-title">コーデ診断</h1>
+        <p class="fx-quiz-sub">直感で選んでください（全9問）</p>
+      </div>
+      <div class="fx-quiz-hero-badge">
+        <span>あなたのスタイルを診断中…</span>
+        <span>Dresscode:You</span>
+      </div>
     </div>
 
-    <!-- Q2 -->
-    <div class="col-12"><p>Q2. どっち派？</p></div>
-    <div class="col-6">
-      <%= f.radio_button :question2, "A", id: "q2a", required: true %><label for="q2a">アウトドア</label>
-      <%= f.radio_button :question2, "B", id: "q2b" %><label for="q2b">インドア</label>
+    <div class="fx-quiz-progress">
+      <div class="fx-quiz-progress-top">
+        <span class="fx-quiz-progress-label">QUESTION</span>
+        <span class="fx-quiz-progress-tag"><span class="fx-quiz-progress-current">1</span> / 9</span>
+      </div>
+      <div class="fx-quiz-progress-bar">
+        <div class="fx-quiz-progress-fill"></div>
+      </div>
+    </div>
+  </header>
+
+  <%= form_for(@perfume, class: 'fx-quiz-form', role: 'form') do |f| %>
+
+    <div class="fx-quiz-main">
+      <%# 左側：質問ブロック（1問ずつ中央） %>
+      <div class="fx-quiz-steps">
+        <%# ========== Q1 ========== %>
+        <fieldset class="fx-quiz-block is-active" data-quiz-step="1">
+          <legend class="fx-quiz-q">Q1. トレンドアイテムは？</legend>
+          <div class="fx-quiz-options">
+            <input type="radio" name="perfume[question1]" id="q1a" value="A" required>
+            <label class="fx-quiz-option" for="q1a">取り入れたい</label>
+
+            <input type="radio" name="perfume[question1]" id="q1b" value="B">
+            <label class="fx-quiz-option" for="q1b">気にしない</label>
+          </div>
+        </fieldset>
+
+        <%# ========== Q2 ========== %>
+        <fieldset class="fx-quiz-block" data-quiz-step="2">
+          <legend class="fx-quiz-q">Q2. どっち派？</legend>
+          <div class="fx-quiz-options">
+            <input type="radio" name="perfume[question2]" id="q2a" value="A" required>
+            <label class="fx-quiz-option" for="q2a">アウトドア</label>
+
+            <input type="radio" name="perfume[question2]" id="q2b" value="B">
+            <label class="fx-quiz-option" for="q2b">インドア</label>
+          </div>
+        </fieldset>
+
+        <%# ========== Q3 ========== %>
+        <fieldset class="fx-quiz-block" data-quiz-step="3">
+          <legend class="fx-quiz-q">Q3. 靴はどっちをはくことが多い？</legend>
+          <div class="fx-quiz-options">
+            <input type="radio" name="perfume[question3]" id="q3a" value="A" required>
+            <label class="fx-quiz-option" for="q3a">スニーカー（派手め）、サンダル系</label>
+
+            <input type="radio" name="perfume[question3]" id="q3b" value="B">
+            <label class="fx-quiz-option" for="q3b">スニーカー（シンプル）、革靴系</label>
+          </div>
+        </fieldset>
+
+        <%# ========== Q4 ========== %>
+        <fieldset class="fx-quiz-block" data-quiz-step="4">
+          <legend class="fx-quiz-q">Q4. ショッピングで最も重視するポイントは？</legend>
+          <div class="fx-quiz-options">
+            <input type="radio" name="perfume[question4]" id="q4a" value="A" required>
+            <label class="fx-quiz-option" for="q4a">デザイン</label>
+
+            <input type="radio" name="perfume[question4]" id="q4b" value="B">
+            <label class="fx-quiz-option" for="q4b">着心地</label>
+
+            <input type="radio" name="perfume[question4]" id="q4c" value="C">
+            <label class="fx-quiz-option" for="q4c">価格</label>
+
+            <input type="radio" name="perfume[question4]" id="q4d" value="D">
+            <label class="fx-quiz-option" for="q4d">流行</label>
+          </div>
+        </fieldset>
+
+        <%# ========== Q5 ========== %>
+        <fieldset class="fx-quiz-block" data-quiz-step="5">
+          <legend class="fx-quiz-q">Q5. 憧れるのはどっちのスタイル？</legend>
+          <div class="fx-quiz-options">
+            <input type="radio" name="perfume[question5]" id="q5a" value="A" required>
+            <label class="fx-quiz-option" for="q5a">町で浮かない落ち着いた雰囲気</label>
+
+            <input type="radio" name="perfume[question5]" id="q5b" value="B">
+            <label class="fx-quiz-option" for="q5b">個性が出るファッション</label>
+          </div>
+        </fieldset>
+
+        <%# ========== Q6 ========== %>
+        <fieldset class="fx-quiz-block" data-quiz-step="6">
+          <legend class="fx-quiz-q">Q6. 色遣いはどっち派？</legend>
+          <div class="fx-quiz-options">
+            <input type="radio" name="perfume[question6]" id="q6a" value="A" required>
+            <label class="fx-quiz-option" for="q6a">モノトーンやアースカラー中心</label>
+
+            <input type="radio" name="perfume[question6]" id="q6b" value="B">
+            <label class="fx-quiz-option" for="q6b">指し色や派手目なカラーが好き</label>
+          </div>
+        </fieldset>
+
+        <%# ========== Q7 ========== %>
+        <fieldset class="fx-quiz-block" data-quiz-step="7">
+          <legend class="fx-quiz-q">Q7. 素材を選ぶなら？</legend>
+          <div class="fx-quiz-options">
+            <input type="radio" name="perfume[question7]" id="q7a" value="A" required>
+            <label class="fx-quiz-option" for="q7a">ナイロン・機能素材系</label>
+
+            <input type="radio" name="perfume[question7]" id="q7b" value="B">
+            <label class="fx-quiz-option" for="q7b">コットン・デニム・レザーなど</label>
+          </div>
+        </fieldset>
+
+        <%# ========== Q8 ========== %>
+        <fieldset class="fx-quiz-block" data-quiz-step="8">
+          <legend class="fx-quiz-q">Q8. 服を選ぶモチベーションは？</legend>
+          <div class="fx-quiz-options">
+            <input type="radio" name="perfume[question8]" id="q8a" value="A" required>
+            <label class="fx-quiz-option" for="q8a">実用性</label>
+
+            <input type="radio" name="perfume[question8]" id="q8b" value="B">
+            <label class="fx-quiz-option" for="q8b">おしゃれ</label>
+
+            <input type="radio" name="perfume[question8]" id="q8c" value="C">
+            <label class="fx-quiz-option" for="q8c">クラシック</label>
+
+            <input type="radio" name="perfume[question8]" id="q8d" value="D">
+            <label class="fx-quiz-option" for="q8d">スポーティ</label>
+          </div>
+        </fieldset>
+
+        <%# ========== Q9 ========== %>
+        <fieldset class="fx-quiz-block" data-quiz-step="9">
+          <legend class="fx-quiz-q">Q9. よく言われる印象は？</legend>
+          <div class="fx-quiz-options">
+            <input type="radio" name="perfume[question9]" id="q9a" value="A" required>
+            <label class="fx-quiz-option" for="q9a">元気</label>
+
+            <input type="radio" name="perfume[question9]" id="q9b" value="B">
+            <label class="fx-quiz-option" for="q9b">落ち着いている</label>
+
+            <input type="radio" name="perfume[question9]" id="q9c" value="C">
+            <label class="fx-quiz-option" for="q9c">面白い</label>
+
+            <input type="radio" name="perfume[question9]" id="q9d" value="D">
+            <label class="fx-quiz-option" for="q9d">優しい</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <%# 右側：縦方向に進んでいくステップインジケーター %>
+      <aside class="fx-quiz-stepper">
+        <ol class="fx-quiz-stepper-list">
+          <% (1..9).each do |i| %>
+            <li class="fx-quiz-stepper-item <%= 'is-current' if i == 1 %>" data-quiz-step="<%= i %>">
+              <span class="fx-quiz-stepper-dot"></span>
+              <span class="fx-quiz-stepper-label">Q<%= i %></span>
+            </li>
+          <% end %>
+        </ol>
+      </aside>
     </div>
 
-    <!-- Q3 -->
-    <div class="col-12"><p>Q3. 靴はどっちをはくことが多い？</p></div>
-    <div class="col-6">
-      <%= f.radio_button :question3, "A", id: "q3a", required: true %><label for="q3a">スニーカー（派手め）、サンダル系</label>
-      <%= f.radio_button :question3, "B", id: "q3b" %><label for="q3b">スニーカー（シンプル）、革靴系</label>
+    <div class="fx-quiz-submit">
+      <%= f.submit " 診断する ", class: "fx-quiz-btn fx-quiz-btn-primary" %>
     </div>
+  <% end %>
+</div>
 
-    <!-- Q4 -->
-    <div class="col-12"><p>Q4. ショッピングで最も重視するポイントは？</p></div>
-    <div class="col-6">
-      <%= f.radio_button :question4, "A", id: "q4a", required: true %><label for="q4a">デザイン</label>
-      <%= f.radio_button :question4, "B", id: "q4b" %><label for="q4b">着心地</label>
-      <%= f.radio_button :question4, "C", id: "q4c" %><label for="q4c">価格</label>
-      <%= f.radio_button :question4, "D", id: "q4d" %><label for="q4d">流行</label>
-    </div>
+<%# ========= JS：選択したら自動で次のQへ（縦ステップが下に進む） ========= %>
+<script>
+  function fxQuizSetup() {
+    const blocks = Array.from(document.querySelectorAll('.fx-quiz-block'));
+    if (!blocks.length) return;
 
-    <!-- Q5 -->
-    <div class="col-12"><p>Q5. 憧れるのはどっちのスタイル？</p></div>
-    <div class="col-6">
-      <%= f.radio_button :question5, "A", id: "q5a", required: true %><label for="q5a">町で浮かない落ち着いた雰囲気</label>
-      <%= f.radio_button :question5, "B", id: "q5b" %><label for="q5b">個性が出るファッション</label>
-    </div>
+    const stepperItems = Array.from(document.querySelectorAll('.fx-quiz-stepper-item'));
+    const progressFill = document.querySelector('.fx-quiz-progress-fill');
+    const progressCurrent = document.querySelector('.fx-quiz-progress-current');
+    const submitBtn = document.querySelector('.fx-quiz-btn-primary');
+    const total = blocks.length;
 
-    <!-- Q6 -->
-    <div class="col-12"><p>Q6. 色遣いはどっち派？</p></div>
-    <div class="col-6">
-      <%= f.radio_button :question6, "A", id: "q6a", required: true %><label for="q6a">モノトーンやアースカラー中心</label>
-      <%= f.radio_button :question6, "B", id: "q6b" %><label for="q6b">指し色や派手目なカラーが好き</label>
-    </div>
+    let currentIndex = 0;
 
-    <!-- Q7 -->
-    <div class="col-12"><p>Q7. 素材を選ぶなら？</p></div>
-    <div class="col-6">
-      <%= f.radio_button :question7, "A", id: "q7a", required: true %><label for="q7a">ナイロン・機能素材系</label>
-      <%= f.radio_button :question7, "B", id: "q7b" %><label for="q7b">コットン・デニム・レザーなど</label>
-    </div>
+    function updateUI() {
+      blocks.forEach((b, idx) => {
+        b.classList.toggle('is-active', idx === currentIndex);
+      });
 
-    <!-- Q8 -->
-    <div class="col-12"><p>Q8. 服を選ぶモチベーションは？</p></div>
-    <div class="col-6">
-      <%= f.radio_button :question8, "A", id: "q8a", required: true %><label for="q8a">実用性</label>
-      <%= f.radio_button :question8, "B", id: "q8b" %><label for="q8b">おしゃれ</label>
-      <%= f.radio_button :question8, "C", id: "q8c" %><label for="q8c">クラシック</label>
-      <%= f.radio_button :question8, "D", id: "q8d" %><label for="q8d">スポーティ</label>
-    </div>
+      stepperItems.forEach((item, idx) => {
+        item.classList.toggle('is-current', idx === currentIndex);
+        item.classList.toggle('is-past', idx < currentIndex);
+      });
 
-    <!-- Q9 -->
-    <div class="col-12"><p>Q9. よく言われる印象は？</p></div>
-    <div class="col-6">
-      <%= f.radio_button :question9, "A", id: "q9a", required: true %><label for="q9a">元気</label>
-      <%= f.radio_button :question9, "B", id: "q9b" %><label for="q9b">落ち着いている</label>
-      <%= f.radio_button :question9, "C", id: "q9c" %><label for="q9c">面白い</label>
-      <%= f.radio_button :question9, "D", id: "q9d" %><label for="q9d">優しい</label>
-    </div>
+      if (progressCurrent) progressCurrent.textContent = (currentIndex + 1);
+      if (progressFill) {
+        const percent = ((currentIndex + 1) / total) * 100;
+        progressFill.style.width = percent + '%';
+      }
+    }
 
-  </div>
+    function goNext() {
+      if (currentIndex < total - 1) {
+        currentIndex += 1;
+        updateUI();
+      } else {
+        if (submitBtn) {
+          submitBtn.classList.add('is-pulse');
+          setTimeout(() => submitBtn.classList.remove('is-pulse'), 800);
+        }
+      }
+    }
 
-  <div class="sindanbotan">
-    <%= f.submit " 診断する " %>
-  </div>
-<% end %>
+    blocks.forEach((block) => {
+      const radios = block.querySelectorAll('input[type="radio"]');
+      radios.forEach((r) => {
+        r.addEventListener('change', () => {
+          const idx = blocks.indexOf(block);
+          if (idx === currentIndex) {
+            goNext();
+          }
+        });
+      });
+    });
+
+    updateUI();
+  }
+
+  document.addEventListener('turbo:load', fxQuizSetup);
+  document.addEventListener('DOMContentLoaded', fxQuizSetup);
+</script>

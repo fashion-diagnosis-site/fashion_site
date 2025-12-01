@@ -1,17 +1,70 @@
-<h1>GeekTwitter</h1>
-<h1>自分の題名</h1>
-<h3>一覧ページ</h3>
-<% if user_signed_in? %>
-  <%= link_to "マイページへ", user_path(current_user.id) %>
-<% end %>
+<!-- Updated design for view/tweets/index.html.erb -->
+<div class="dcy-index">
+<h1 class="dcy-title">Dresscode:You</h1>
 
-<%= link_to "新規投稿へ", new_tweet_path %>
-<div class="tweets-container">
-  <% @tweets.each do |t| %>
-    <div class="tweet">
-      <%= t.title %>
-      <%= t.about %>
-      <%= t.user.email %>
-    </div>
-  <% end %>
+
+<div class="dcy-filmstrip dcy-filmstrip--top" aria-label="style filmstrip">
+<ul class="dcy-filmstrip-track">
+<li class="dcy-card"><%= image_tag 'topstyleimage1.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topstyleimage2.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topstyleimage3.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topstyleimage4.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topstyleimage5.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topstyleimage6.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topstyleimage1.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topstyleimage2.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topstyleimage3.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topstyleimage4.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topstyleimage5.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topstyleimage6.jpg' %></li>
+</ul>
+</div>
+
+
+<section class="dcy-hero" aria-labelledby="dcy-hero-title">
+<div class="dcy-hero-inner">
+<h2 id="dcy-hero-title" class="dcy-hero-title">
+自分に似合うファッションが<br class="dcy-br-sm">分からない、そんなあなたへ。
+</h2>
+
+
+<p class="dcy-hero-lead">
+<strong>Dresscode:You</strong> は、診断を通じて
+<span class="dcy-underline">"あなたらしい"ファッション系統</span>を紹介するサイトです。
+</p>
+
+
+<ul class="dcy-hero-list">
+<li>診断結果に合わせて <span class="dcy-em">コーデ</span><span class="dcy-em">ブランド</span><span class="dcy-em">アイテム</span> をご提案</li>
+<li>はじめての人でも分かりやすい <span class="dcy-em">写真つき</span><span class="dcy-em">リンクつき</span> の解説</li>
+<li>"迷い"を減らして、<span class="dcy-em">今日から楽しめる</span>スタイルづくりをサポート</li>
+</ul>
+
+
+<p class="dcy-hero-tag">~ まだ知らない "あなたらしさ" を見つけよう。~</p>
+</div>
+</section>
+
+
+<p class="dcy-cta">
+<%= link_to "診断を始める", new_perfume_path, class: "dcy-link" %>
+</p>
+
+
+<div class="dcy-filmstrip dcy-filmstrip--bottom" aria-label="item strip">
+<ul class="dcy-filmstrip-track">
+<li class="dcy-card"><%= image_tag 'topitemimage1.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topitemimage2.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topitemimage3.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topitemimage4.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topitemimage5.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topitemimage6.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topitemimage1.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topitemimage2.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topitemimage3.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topitemimage4.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topitemimage5.jpg' %></li>
+<li class="dcy-card"><%= image_tag 'topitemimage6.jpg' %></li>
+</ul>
+</div>
 </div>

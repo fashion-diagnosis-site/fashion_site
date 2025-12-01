@@ -1,80 +1,181 @@
-<h1>users#show</h1>
-<p>名前 : <%= @user.name %></p>
-<p>メールアドレス : <%= @user.email %></p>
-<p>プロフィール : <%= @user.profile %></p>
+<% total_diagnoses = @perfumes&.size || 0 %>
+<% latest_perfume = @perfumes.present? ? @perfumes.max_by(&:created_at) : nil %>
 
-<% if current_user&.id == @user.id %>
-  <%= link_to "編集する", edit_user_registration_path %>
-<% end %>
+<div class="fx-mypage-canvas">
+  <!-- 背景の装飾オーブ -->
+  <div class="fx-mypage-orb fx-mypage-orb--tl"></div>
+  <div class="fx-mypage-orb fx-mypage-orb--br"></div>
 
-<h2>ユーザーの投稿一覧</h2>
-<% @user.tweets.each do |t| %>
-  <div class="tweet">
-    <p><strong>投稿者:</strong> <%= t.user&.name || t.user&.email %></p>
-    <p><strong>タイトル:</strong> <%= t.title %></p>
-    <p><strong>本文:</strong> <%= t.about %></p>  <!-- ← body から about に修正 -->
-  </div>
-<% end %>
-
-<!-- 以下はいいね機能を実装している場合 -->
-<% if @user.respond_to?(:liked_tweets) %>
-  <h2>ユーザーがいいねした投稿一覧</h2>
-  <% @user.liked_tweets.each do |t| %>
-    <div class="tweet">
-      <p><strong>投稿者:</strong> <%= t.user&.name || t.user&.email %></p>
-      <p><strong>タイトル:</strong> <%= t.title %></p>
-      <p><strong>本文:</strong> <%= t.about %></p>
-    </div>
-  <% end %>
-<% end %>
-<!-- ここまで -->
-
-<%= link_to "Tweet一覧に戻る", tweets_path %>
-
-<h3>マイページ</h3>
-<p><%= current_user.email %> さんの診断履歴</p>
-
-<% if @perfumes.any? %>
-  <div class="history-grid">
-    <% @perfumes.each do |p| %>
-      <% top3 = p.top3_styles %>
-      <div class="history-card">
-        <div class="history-head">
-          <strong><%= l(p.created_at, format: :long) %></strong>
-          <span>（ID: <%= p.id %>）</span>
-        </div>
-        <ol class="top3">
-          <% top3.each do |s| %>
-            <li><%= s[:name] %>（<%= s[:count] %>）</li>
-          <% end %>
-        </ol>
-        <div class="actions">
-          <%= link_to "詳細を見る", perfume_path(p), class: "btn btn-sm btn-primary" %>
+  <!-- ヘッダー：ユーザー概要 -->
+  <header class="fx-mypage-hero">
+    <div class="fx-mypage-hero-main">
+      <div class="fx-mypage-avatar-wrap">
+        <div class="fx-mypage-avatar">
+          <span>
+            <%= (@user.name.presence || @user.email).to_s.first&.upcase %>
+          </span>
         </div>
       </div>
+
+      <div class="fx-mypage-hero-meta">
+        <h1 class="fx-mypage-title">マイページ</h1>
+        <p class="fx-mypage-userline">
+          <span class="fx-mypage-username"><%= @user.name %></span>
+          <span class="fx-mypage-useremail"><%= @user.email %></span>
+        </p>
+
+        <% if @user.profile.present? %>
+          <p class="fx-mypage-profile"><%= @user.profile %></p>
+        <% else %>
+          <p class="fx-mypage-profile fx-mypage-profile--placeholder">
+            自己紹介を追加して、あなたのスタイルを一言で表現してみましょう。
+          </p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="fx-mypage-hero-side">
+      <div class="fx-mypage-hero-stats">
+        <div class="fx-mypage-stat">
+          <span class="fx-mypage-stat-label">診断回数</span>
+          <span class="fx-mypage-stat-value"><%= total_diagnoses %> 回</span>
+        </div>
+
+        <% if latest_perfume %>
+          <div class="fx-mypage-stat">
+            <span class="fx-mypage-stat-label">最新の診断</span>
+            <span class="fx-mypage-stat-value">
+              <%= l(latest_perfume.created_at.to_date, format: :long) %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="fx-mypage-hero-actions">
+        <% if current_user&.id == @user.id %>
+          <%= link_to "プロフィールを編集",
+                      edit_user_registration_path,
+                      class: "fx-mypage-btn fx-mypage-btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </header>
+
+  <!-- いいね一覧（任意） -->
+  <% if @user.respond_to?(:liked_tweets) && @user.liked_tweets.any? %>
+    <section class="fx-mypage-section">
+      <div class="fx-mypage-section-head">
+        <div>
+          <h2 class="fx-mypage-h2">いいねした投稿</h2>
+          <p class="fx-mypage-note">
+            気になった投稿をあとから見返せます。
+          </p>
+        </div>
+      </div>
+
+      <div class="fx-mypage-likegrid">
+        <% @user.liked_tweets.each do |t| %>
+          <article class="fx-mypage-likecard" data-mypage-anim="card">
+            <div class="fx-mypage-likehead">
+              <span class="fx-mypage-likeauthor">
+                <%= t.user&.name || t.user&.email || "匿名" %>
+              </span>
+            </div>
+            <h3 class="fx-mypage-liketitle"><%= t.title %></h3>
+            <p class="fx-mypage-likesnippet"><%= t.about %></p>
+          </article>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- 診断履歴 -->
+  <section class="fx-mypage-section">
+    <div class="fx-mypage-section-head">
+      <div>
+        <h2 class="fx-mypage-h2">診断履歴</h2>
+        <p class="fx-mypage-note">
+          <%= @user.name %> さんの診断結果タイムライン
+        </p>
+      </div>
+
+      <% if current_user&.id == @user.id %>
+        <%= link_to "新しく診断する",
+                    new_perfume_path,
+                    class: "fx-mypage-btn fx-mypage-btn-ghost" %>
+      <% end %>
+    </div>
+
+    <% if @perfumes.any? %>
+      <div class="fx-mypage-historygrid">
+        <% @perfumes.each do |p| %>
+          <% top3 = p.top3_styles %>
+          <article class="fx-mypage-historycard" data-mypage-anim="card">
+            <header class="fx-mypage-historyhead">
+              <div class="fx-mypage-history-main">
+                <time class="fx-mypage-historydate">
+                  <%= l(p.created_at, format: :long) %>
+                </time>
+                <span class="fx-mypage-historyid">ID: <%= p.id %></span>
+              </div>
+              <span class="fx-mypage-historychip">
+                STYLE CHECK
+              </span>
+            </header>
+
+            <!-- 上位スタイルをバッジ表示 -->
+            <ul class="fx-mypage-badgewrap">
+              <% top3.each do |s| %>
+                <li class="fx-mypage-badge">
+                  <span class="fx-mypage-badge-name"><%= s[:name] %></span>
+                  <span class="fx-mypage-badge-count"><%= s[:count] %></span>
+                </li>
+              <% end %>
+            </ul>
+
+            <div class="fx-mypage-actions">
+              <%= link_to "詳細を見る",
+                          perfume_path(p),
+                          class: "fx-mypage-btn fx-mypage-btn-primary fx-mypage-btn-small" %>
+            </div>
+          </article>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="fx-mypage-empty" data-mypage-anim="card">
+        <p>まだ診断履歴がありません。</p>
+        <%= link_to "診断をはじめる",
+                    new_perfume_path,
+                    class: "fx-mypage-btn fx-mypage-btn-primary" %>
+      </div>
     <% end %>
-  </div>
-<% else %>
-  <p>まだ診断履歴がありません。</p>
-  <%= link_to "診断をはじめる", new_perfume_path, class: "btn btn-primary" %>
-<% end %>
+  </section>
+</div>
 
-<style>
-.history-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 12px;
-  margin-top: 12px;
-}
-.history-card {
-  border: 1px solid #eee;
-  border-radius: 12px;
-  padding: 12px;
-  background: #fff;
-}
-.history-head { display:flex; gap: 8px; align-items: baseline; margin-bottom: 8px; }
-.top3 { margin: 0 0 8px; padding-left: 18px; }
-.actions .btn { text-decoration: none; }
-</style>
+<script>
+  function fxInitMypageAnimation () {
+    const hero = document.querySelector('.fx-mypage-hero');
+    if (hero && !hero.classList.contains('is-mounted')) {
+      requestAnimationFrame(() => {
+        hero.classList.add('is-mounted');
+      });
+    }
 
+    const targets = document.querySelectorAll('[data-mypage-anim]');
+    if (!targets.length) return;
 
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    targets.forEach((el) => io.observe(el));
+  }
+
+  document.addEventListener('turbo:load', fxInitMypageAnimation);
+  document.addEventListener('DOMContentLoaded', fxInitMypageAnimation);
+</script>

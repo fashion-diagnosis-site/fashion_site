@@ -16,6 +16,9 @@ class PerfumesController < ApplicationController
     # redirect_to root_path, alert: "権限がありません" unless @perfume.user_id == current_user.id
   end
 
+  def item
+  end
+  
   def create
     @perfume = current_user.perfumes.new(perfume_params)
     if @perfume.save

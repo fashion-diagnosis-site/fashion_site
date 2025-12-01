@@ -1,0 +1,404 @@
+/* ===============================
+   perfumes#new 専用スタイル
+   接頭辞: fx-quiz-*
+   =============================== */
+
+.fx-quiz-canvas{
+  max-width: 1100px;            /* ★横をガッツリ使う */
+  margin: 0 auto;
+  padding: 24px 18px 64px;
+}
+
+@media (min-height: 720px){
+  .fx-quiz-canvas{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* アラート */
+.fx-quiz-alert{
+  max-width: 1100px;
+  margin: 16px auto;
+  padding: 12px 14px;
+  border: 1px solid #f9d3d3;
+  background: #fff6f6;
+  color: #8a1f1f;
+  border-radius: 12px;
+}
+
+/* ヒーロー */
+.fx-quiz-hero{
+  padding: 18px 20px;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(129,140,248,0.25), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(244,114,182,0.22), transparent 55%),
+    linear-gradient(135deg,#f7f8ff 0%,#ffffff 60%,#fdf2ff 100%);
+  box-shadow: 0 18px 45px rgba(15,23,42,0.12);
+  margin-bottom: 22px;
+  border: 1px solid rgba(148,163,255,0.4);
+}
+
+.fx-quiz-hero-inner{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.fx-quiz-title{
+  margin:0 0 6px;
+  font-size:30px;
+  font-weight:800;
+  letter-spacing: 0.05em;
+}
+
+.fx-quiz-sub{
+  margin:0;
+  color:#4b5563;
+  font-weight: 500;
+}
+
+.fx-quiz-hero-badge{
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(15,23,42,0.9);
+  color: #e5e7eb;
+  font-size: 11px;
+  box-shadow: 0 10px 25px rgba(15,23,42,0.45);
+}
+.fx-quiz-hero-badge span:last-child{
+  font-weight: 700;
+}
+
+/* プログレスバー */
+.fx-quiz-progress{
+  margin-top: 16px;
+}
+
+.fx-quiz-progress-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:6px;
+  font-size:12px;
+}
+
+.fx-quiz-progress-label{
+  font-weight:700;
+  letter-spacing:0.08em;
+  color:#374151;
+}
+
+.fx-quiz-progress-tag{
+  padding:3px 8px;
+  border-radius:999px;
+  background:#eef2ff;
+  color:#4f46e5;
+  font-weight:600;
+}
+
+.fx-quiz-progress-bar{
+  position:relative;
+  width:100%;
+  height:7px;
+  border-radius:999px;
+  background:#e5e7eb;
+  overflow:hidden;
+}
+
+.fx-quiz-progress-fill{
+  position:absolute;
+  inset:0;
+  width:11%;
+  border-radius:999px;
+  background: linear-gradient(90deg,#4f46e5,#6366f1,#ec4899);
+  box-shadow:0 0 18px rgba(129,140,248,0.8);
+  transition: width .35s ease-out;
+}
+
+/* メインレイアウト：左に大きいカード、右に縦ステップ */
+.fx-quiz-main{
+  margin-top: 24px;
+  display:flex;
+  gap:32px;
+  flex:1;
+}
+
+/* 左：質問ブロック */
+.fx-quiz-steps{
+  flex: 1 1 auto;
+  min-height: 60vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* 質問カード（横幅広め） */
+.fx-quiz-block{
+  max-width: 860px;               /* ★細くならないように広めに */
+  width: 100%;
+  border: 1px solid #eef0f6;
+  background:#ffffff;
+  border-radius: 20px;
+  padding: 24px 26px 26px;
+  box-shadow: 0 10px 38px rgba(15,23,42,0.12);
+  margin:0;
+  opacity:0;
+  pointer-events:none;
+  transform: translateY(40px);
+  filter: blur(4px);
+  position: absolute;
+  transition:
+    opacity .3s ease-out,
+    transform .3s ease-out,
+    filter .3s ease-out;
+}
+
+.fx-quiz-block.is-active{
+  opacity:1;
+  pointer-events:auto;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* 問題文 */
+.fx-quiz-q{
+  font-weight: 800;
+  margin: 0 0 18px;
+  font-size: 20px;
+  position: relative;
+  padding-bottom: 10px;
+  line-height: 1.8;               /* ★ゆとりの行間 */
+}
+
+.fx-quiz-q::after{
+  content: "";
+  position:absolute;
+  left:0;
+  bottom:0;
+  height:3px;
+  width:0;
+  border-radius:999px;
+  background: linear-gradient(90deg,#6366f1,#ec4899,#fbbf24);
+  opacity:0;
+  transition: width .4s ease-out, opacity .4s ease-out;
+}
+
+.fx-quiz-block.is-active .fx-quiz-q::after{
+  width: 85%;
+  opacity: 0.95;
+}
+
+/* 選択肢：1列縦並びでデカめ */
+.fx-quiz-options{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.fx-quiz-options--multi{
+  grid-template-columns: 1fr;
+}
+
+/* input 非表示 */
+.fx-quiz-options input[type="radio"]{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 選択肢カード */
+.fx-quiz-option{
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 14px 16px;
+  min-height: 58px;
+  border-radius: 16px;
+  background: #f7f8fd;
+  border: 1px solid #e3e6ff;
+  color: #30364b;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.8;               /* ★日本語長文でもかなりゆとり */
+  cursor: pointer;
+  transition:
+    transform .12s ease,
+    box-shadow .12s ease,
+    background .12s ease,
+    border-color .12s ease;
+}
+
+.fx-quiz-option:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(15,23,42,0.15);
+}
+
+/* 選択時の見た目 */
+.fx-quiz-options input[type="radio"]:checked + .fx-quiz-option{
+  background: radial-gradient(circle at 0% 0%, #a5b4fc, #6366f1);
+  border-color: #4f46e5;
+  color: #ffffff;
+  box-shadow: 0 18px 32px rgba(79,70,229,0.45);
+}
+
+/* 右側：縦方向に進むステップインジケーター */
+.fx-quiz-stepper{
+  width: 130px;
+  flex: 0 0 auto;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+}
+
+.fx-quiz-stepper-list{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.fx-quiz-stepper-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size: 13px;
+  color:#9ca3af;
+}
+
+.fx-quiz-stepper-dot{
+  width:10px;
+  height:10px;
+  border-radius:999px;
+  border:2px solid #d1d5db;
+  background:#f9fafb;
+  transition: all .2s ease;
+}
+
+.fx-quiz-stepper-label{
+  font-weight:600;
+}
+
+/* 現在のステップ */
+.fx-quiz-stepper-item.is-current .fx-quiz-stepper-dot{
+  border-color:#4f46e5;
+  background:#6366f1;
+  box-shadow: 0 0 12px rgba(79,70,229,0.7);
+}
+.fx-quiz-stepper-item.is-current{
+  color:#111827;
+}
+
+/* 終わったステップ */
+.fx-quiz-stepper-item.is-past .fx-quiz-stepper-dot{
+  border-color:#a5b4fc;
+  background:#e5e7ff;
+}
+.fx-quiz-stepper-item.is-past{
+  color:#6b7280;
+}
+
+/* 送信ボタン */
+.fx-quiz-submit{
+  margin-top: 26px;
+  text-align: center;
+}
+
+.fx-quiz-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content:center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  font-weight: 800;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  font-size: 14px;
+}
+
+.fx-quiz-btn-primary{
+  background: linear-gradient(135deg,#4f46e5,#6366f1);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 16px 34px rgba(79,70,229,0.55);
+  position: relative;
+  overflow:hidden;
+}
+
+.fx-quiz-btn-primary::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-40%;
+  width:40%;
+  height:100%;
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);
+  transform: translateX(-100%);
+  opacity:0;
+}
+
+.fx-quiz-btn-primary:hover::before{
+  opacity:1;
+  transform: translateX(260%);
+  transition: transform .65s ease-out, opacity .2s ease-out;
+}
+
+.fx-quiz-btn-primary:hover{
+  filter: brightness(1.02);
+}
+
+/* 最後の質問を答えたときのポヨン */
+.fx-quiz-btn-primary.is-pulse{
+  animation: fx-quiz-pulse .7s ease-out;
+}
+
+@keyframes fx-quiz-pulse{
+  0%{ transform:scale(1);}
+  40%{ transform:scale(1.06);}
+  100%{ transform:scale(1);}
+}
+
+/* レスポンシブ */
+@media (max-width: 900px){
+  .fx-quiz-main{
+    flex-direction:column;
+    gap:20px;
+  }
+  .fx-quiz-steps{
+    order:1;
+  }
+  .fx-quiz-stepper{
+    order:0;
+    width:100%;
+    justify-content:flex-start;
+  }
+  .fx-quiz-stepper-list{
+    flex-direction:row;
+    flex-wrap:wrap;
+  }
+}
+
+@media (max-width: 720px){
+  .fx-quiz-hero-inner{
+    flex-direction: column;
+    align-items:flex-start;
+  }
+  .fx-quiz-title{ font-size:24px; }
+  .fx-quiz-block{
+    max-width:100%;
+    padding: 20px 16px 22px;
+  }
+}

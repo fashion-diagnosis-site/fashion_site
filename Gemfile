@@ -60,3 +60,4 @@ gem 'devise'
 #  gem 'pg'
 #end
 gem "pg", "~> 1.5"
+gem "sassc-rails"

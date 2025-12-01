@@ -14,38 +14,3 @@
  *= require_self
  
  */
-* {
-  padding: 0;
-  margin: 0;
-}
-body {
-  font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", "メイリオ",
-    Meiryo, "ＭＳ Ｐゴシック", sans-serif;
-}
-header {
-  background-color: #00acee;
-  height: 80px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-header a {
-  color: white; 
-  text-decoration: none; 
-}
-header h1 {
-  color: white;
-  margin-left: 20px;
-}
-.header-list {
-  display: flex;
-  align-items: center;
-}
-header ul {
-  display: flex;
-}
-header li {
-  list-style: none;
-  margin-right: 40px;
-}

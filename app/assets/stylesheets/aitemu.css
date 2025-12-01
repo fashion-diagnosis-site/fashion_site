@@ -1,0 +1,267 @@
+/* ==========================================
+   アイテム一覧ページ専用 CSS
+   クラス名は fx-closet-* で統一
+   ========================================== */
+
+.fx-closet-stage {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 28px 16px 72px;
+  background: radial-gradient(circle at top, #fdf7ff 0, #ffffff 40%, #f7f9ff 100%);
+}
+
+/* イントロ */
+.fx-closet-intro-tag {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #9c8dff;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.fx-closet-intro-title {
+  font-size: clamp(24px, 4vw, 30px);
+  line-height: 1.4;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+.fx-closet-intro-title span {
+  display: block;
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* ラック全体 */
+.fx-closet-rack {
+  position: relative;
+  margin-top: 32px;
+  padding: 22px 14px 24px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 35px rgba(15, 20, 40, 0.08);
+  overflow: hidden;
+}
+
+.fx-closet-rack::before {
+  /* ラックのバー（上の一本線） */
+  content: "";
+  position: absolute;
+  inset-inline: 8%;
+  top: 16px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #d7d7e8, #f0f0ff, #d7d7e8);
+  opacity: 0.9;
+}
+
+/* ラックのヘッダー */
+.fx-closet-rack-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-inline: 2px;
+}
+
+.fx-closet-style-name {
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fx-closet-style-note {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #999;
+}
+
+/* セクション内の見出しとレール */
+.fx-closet-strip {
+  margin-top: 10px;
+}
+
+.fx-closet-strip + .fx-closet-strip {
+  margin-top: 20px;
+  border-top: 1px dashed rgba(180, 180, 205, 0.4);
+  padding-top: 14px;
+}
+
+.fx-closet-strip-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 8px 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fx-closet-strip-title::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #9c8dff, #ff9cd9);
+}
+
+/* 横スクロールのレール */
+.fx-closet-rail {
+  list-style: none;
+  padding: 8px 2px 4px;
+  margin: 0 -6px 0;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.fx-closet-rail::-webkit-scrollbar {
+  height: 6px;
+}
+.fx-closet-rail::-webkit-scrollbar-track {
+  background: transparent;
+}
+.fx-closet-rail::-webkit-scrollbar-thumb {
+  background: rgba(160, 160, 190, 0.4);
+  border-radius: 999px;
+}
+
+/* ハンガーカード */
+.fx-closet-hanger {
+  scroll-snap-align: start;
+  flex: 0 0 146px;
+  display: flex;
+  justify-content: center;
+  padding-top: 10px; /* ラックバーとの余白 */
+  animation: fxClosetSway 3.2s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+.fx-closet-hanger a {
+  text-decoration: none;
+}
+
+/* ハンガー本体（ここにフック & バーを生やす） */
+.fx-closet-hanger-body {
+  position: relative;
+  padding-top: 26px; /* フックの分だけ上に余白 */
+  perspective: 800px;
+}
+
+/* フック部分 */
+.fx-closet-hanger-body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 26px;
+  height: 22px;
+  border: 2px solid #444;
+  border-bottom: none;
+  border-radius: 18px 18px 0 0;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+}
+
+/* 肩にかかるバー部分 */
+.fx-closet-hanger-body::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  width: 76px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #444, #777, #444);
+  transform: translateX(-50%);
+}
+
+/* 画像（服部分） */
+.fx-closet-thumb {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 14px;
+  background: #f4f4ff;
+  box-shadow:
+    0 10px 22px rgba(20, 20, 40, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.8);
+  transition:
+    transform 0.35s cubic-bezier(0.21, 0.82, 0.35, 1.01),
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
+  transform-origin: center center;
+  backface-visibility: hidden;
+}
+
+/* デフォルトはゆらゆら、hover でクルッと回転 */
+.fx-closet-hanger:hover {
+  animation-play-state: paused; /* hover中は揺れ停止 */
+}
+
+.fx-closet-hanger:hover .fx-closet-thumb {
+  animation: fxClosetSpin 0.8s ease-out;
+  box-shadow:
+    0 16px 32px rgba(15, 15, 40, 0.25),
+    0 0 0 1px rgba(255, 255, 255, 1);
+  filter: brightness(1.05) saturate(1.05);
+}
+
+/* アニメーション定義 */
+@keyframes fxClosetSway {
+  0%   { transform: rotate(1.5deg); }
+  50%  { transform: rotate(-1.5deg); }
+  100% { transform: rotate(1.5deg); }
+}
+
+@keyframes fxClosetSpin {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+/* コーデ用レールだけ、少しだけサイズ変えるならここで */
+.fx-closet-strip-coord .fx-closet-hanger {
+  flex-basis: 136px;
+}
+
+/* スマホ対応 */
+@media (max-width: 640px) {
+  .fx-closet-stage {
+    padding: 20px 10px 52px;
+  }
+
+  .fx-closet-rack {
+    padding-inline: 10px;
+    border-radius: 16px;
+  }
+
+  .fx-closet-rack::before {
+    inset-inline: 10%;
+  }
+
+  .fx-closet-style-name {
+    font-size: 18px;
+  }
+
+  .fx-closet-style-note {
+    display: none; /* スマホではサブテキスト隠してスッキリ */
+  }
+
+  .fx-closet-rail {
+    gap: 12px;
+  }
+
+  .fx-closet-hanger {
+    flex-basis: 130px;
+  }
+}
