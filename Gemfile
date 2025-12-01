@@ -36,7 +36,7 @@ gem "bootsnap", require: false
 
 group :development, :test do
   # 開発/テストは SQLite
-  gem "sqlite3", "~> 1.4"
+  gem "sqlite3", "~> 2.8"
   gem "dotenv-rails"
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
   gem "brakeman", require: false
