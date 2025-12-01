@@ -56,8 +56,7 @@ group :test do
 end
 gem 'devise'
 
-#group :production do
-#  gem 'pg'
-#end
-gem "pg", "~> 1.5"
+group :production do
+  gem 'pg'
+end
 gem "sassc-rails"
